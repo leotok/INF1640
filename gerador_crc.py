@@ -26,15 +26,15 @@ def divisao_modulo_dois(dividendo, divisor):
 		if num_bit == r:
 			quociente |= 1
 			resto ^= divisor
-			print "%s%9s" %((k - r - aux) * ' ', bin(divisor))
+			print "%s%9s%s" %((k - r - aux) * ' ', bin(divisor), (aux) * '|')
 		else:
-			print "%s%s" % ((k - r - aux) * ' ', "0b0000000")
-		print  "%s%s" % ((k - r - aux) * ' ',"---------")
+			print "%s%s%s" % ((k - r - aux) * ' ', "0b0000000", (aux) * '|')
+		print  "%s%s%s" % ((k - r - aux) * ' ',"---------", (aux) * '|')
 
 		aux -= 1
 		if aux > -1:
 			resto  = ((resto << 1) | ((dividendo >> aux) & 1))
-		print "%s%9s" % ((k - r - aux) * ' ', bin(resto))
+		print "%s%9s%s" % ((k - r - aux) * ' ', bin(resto), (aux) * '|')
 
 	print "\nQuociente:", bin(quociente)
 	print "Resto:", bin(resto)
