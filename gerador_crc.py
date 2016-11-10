@@ -52,6 +52,28 @@ def gerador_crc(mensagem, polinomio):
 
 	return (mensagem_transmitida, fcs)
 
+def cria_tabela_lfsr(mensagem, polinomio):
+	print "r5 | r4 | r3 | r2 | r1 | r0 | r54i | r53i | r50i | r5i | i "
+	r0, r1, r2, r3, r4, r5 = 0, 0, 0, 0, 0, 0
+
+	for j in range(32):
+		i = (mensagem >> 31 - j) & 1
+		
+		r5i = r5 ^ i
+		r50i = r5 ^ i ^ r0
+		r53i = r5 ^ i ^ r3
+		r54i = r5 ^ i ^ r4
+
+		print "%2d |%3d |%3d |%3d |%3d |%3d | %3d  | %3d  | %3d  | %2d  | %d" %(r5, r4, r3, r2, r1, r0, r54i, r53i, r50i, r5i, i)
+
+		r5 = r54i
+		r4 = r53i
+		r3 = r2
+		r2 = r1
+		r1 = r50i
+		r0 = r5i
+
+	print "%2d |%3d |%3d |%3d |%3d |%3d " %(r5, r4, r3, r2, r1, r0)
 
 if __name__ == '__main__':
 	
@@ -64,6 +86,10 @@ if __name__ == '__main__':
 	print "Mensagem transmitida:", bin(mensagem_transmitida)
 
 
-	print "Verificacao do CRC na recepcao:"
+	print "\nVerificacao do CRC na recepcao:"
 	_, resto = divisao_modulo_dois(mensagem_transmitida, polinomio)
-	print "Transmissao com sucesso!" if resto == 0 else "Falha na transmissao."
+
+	print "\nTransmissao com sucesso!" if resto == 0 else "Falha na transmissao."
+
+	print "\nTabela LFSR"
+	cria_tabela_lfsr(mensagem, polinomio)
